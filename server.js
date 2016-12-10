@@ -4,7 +4,7 @@ var _ = require('underscore');
 var db = require('./db.js');
 
 var app = express();
-var PORT = process.env.PORT || 3002;
+var PORT = process.env.PORT || 3005;
 var todos = [];
 var todoNextId = 1;
 
@@ -125,6 +125,15 @@ app.post('/users', function (req, res) {
 		res.status(400).json(e);
 	
 	});
+});
+// POST /users/login
+app.post('/users/login', function (req, res) {
+	var body = _.pick(req.body, 'email', 'password');
+
+	if (typeof body.email !== 'string' || typeof body.password !== 'string') {
+		return res.status(400).send();
+	}
+	res.json(body);
 });
 
 db.sequelize.sync().then(function() {
